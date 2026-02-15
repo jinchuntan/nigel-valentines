@@ -1,0 +1,10 @@
+{
+  "name": "valentines-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Valentine website ready for Vercel deployment",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node -e \"require('node:http').createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/plain'});res.end('Static project: deploy dist/ to Vercel.');}).listen(3000)\""
+  }
+}

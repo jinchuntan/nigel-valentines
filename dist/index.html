@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow glow-a" aria-hidden="true"></div>
+  <div class="bg-glow glow-b" aria-hidden="true"></div>
+  <div class="bg-glow glow-c" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <section class="panel panel-opening is-active" id="opening-screen" aria-live="polite">
+      <p class="eyebrow">Valentine Special</p>
+      <h1>Love Is In The Air</h1>
+      <p class="lead">A tiny surprise is waiting for you.</p>
+      <p class="signature">A little note from Nigel</p>
+      <button class="btn btn-enter" id="enter-btn">Enter</button>
+    </section>
+
+    <section class="panel panel-main" id="main-screen" aria-live="polite">
+      <h2>Will You Be My Valentine?</h2>
+      <p class="lead">Choose wisely, my heart depends on this. - Nigel</p>
+
+      <div class="button-zone" id="button-zone">
+        <button class="btn btn-yes" id="yes-btn">Yes</button>
+        <button class="btn btn-no" id="no-btn">No</button>
+      </div>
+    </section>
+
+    <section class="panel panel-final" id="final-screen" aria-live="polite">
+      <div class="roses" aria-hidden="true">
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+        <span class="rose">🌹</span>
+      </div>
+      <h2>You just made my whole year.</h2>
+      <p class="lead">
+        Perfect. Get ready for a dreamy night date at
+        <strong>Marini's on 57, Kuala Lumpur</strong>.
+      </p>
+      <p class="date-card">
+        Valentine's Day | 8:00 PM
+      </p>
+      <p class="small-note">Dress up a little. Tonight, we celebrate us. - Nigel</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
