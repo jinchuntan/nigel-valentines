@@ -152,8 +152,8 @@ h2 {
 
 .button-zone {
   margin-top: 12px;
-  width: min(760px, 90vw);
-  height: clamp(320px, 46vh, 440px);
+  width: min(900px, 92vw);
+  height: clamp(360px, 52vh, 520px);
   position: relative;
   border-radius: 22px;
   border: 1px dashed rgba(255, 255, 255, 0.35);
@@ -171,14 +171,14 @@ h2 {
 }
 
 .btn-yes {
-  left: 22%;
-  top: 50%;
+  left: 12%;
+  top: 52%;
   background: var(--yes);
 }
 
 .btn-no {
-  left: 58%;
-  top: 50%;
+  left: 74%;
+  top: 52%;
   background: var(--no);
 }
 
@@ -277,14 +277,22 @@ h2 {
   }
 
   .button-zone {
-    width: min(92vw, 620px);
-    height: clamp(260px, 42dvh, 320px);
+    width: min(94vw, 720px);
+    height: clamp(280px, 44dvh, 360px);
   }
 
   .btn-yes,
   .btn-no {
     min-width: 96px;
     padding: 0.7rem 1rem;
+  }
+
+  .btn-yes {
+    left: 10%;
+  }
+
+  .btn-no {
+    left: 70%;
   }
 }
 
@@ -300,7 +308,15 @@ h2 {
 
   .button-zone {
     width: 100%;
-    height: clamp(240px, 40dvh, 300px);
+    height: clamp(260px, 42dvh, 330px);
+  }
+
+  .btn-yes {
+    left: 8%;
+  }
+
+  .btn-no {
+    left: 66%;
   }
 }
 

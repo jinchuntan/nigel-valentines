@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 const root = process.cwd();
 const dist = resolve(root, "dist");
-const files = ["index.html", "styles.css", "script.js"];
+const files = ["index.html", "styles.css", "script.js", "favicon.svg"];
 
 async function build() {
   await rm(dist, { recursive: true, force: true });

@@ -1,4 +1,4 @@
-const openingScreen = document.getElementById("opening-screen");
+﻿const openingScreen = document.getElementById("opening-screen");
 const mainScreen = document.getElementById("main-screen");
 const finalScreen = document.getElementById("final-screen");
 
@@ -7,6 +7,9 @@ const yesBtn = document.getElementById("yes-btn");
 const noBtn = document.getElementById("no-btn");
 const buttonZone = document.getElementById("button-zone");
 
+const NO_EDGE_BUFFER = 26;
+const NO_ACTIVATION_DELAY_MS = 500;
+
 const noState = {
   currentX: null,
   currentY: null,
@@ -14,6 +17,8 @@ const noState = {
   targetY: null,
   rafId: null
 };
+let noMovementEnabled = false;
+let noMovementTimer = null;
 
 function showScreen(screen) {
   [openingScreen, mainScreen, finalScreen].forEach((panel) => {
@@ -29,15 +34,15 @@ function clamp(value, min, max) {
 function getNoBounds() {
   const zoneRect = buttonZone.getBoundingClientRect();
   const noRect = noBtn.getBoundingClientRect();
-  const maxX = Math.max(8, zoneRect.width - noRect.width - 8);
-  const maxY = Math.max(8, zoneRect.height - noRect.height - 8);
+  const maxX = Math.max(NO_EDGE_BUFFER, zoneRect.width - noRect.width - NO_EDGE_BUFFER);
+  const maxY = Math.max(NO_EDGE_BUFFER, zoneRect.height - noRect.height - NO_EDGE_BUFFER);
   return { zoneRect, noRect, maxX, maxY };
 }
 
 function setNoTarget(x, y) {
   const bounds = getNoBounds();
-  noState.targetX = clamp(x, 8, bounds.maxX);
-  noState.targetY = clamp(y, 8, bounds.maxY);
+  noState.targetX = clamp(x, NO_EDGE_BUFFER, bounds.maxX);
+  noState.targetY = clamp(y, NO_EDGE_BUFFER, bounds.maxY);
 }
 
 function seedNoState() {
@@ -47,8 +52,8 @@ function seedNoState() {
   const fallbackX = bounds.noRect.left - bounds.zoneRect.left;
   const fallbackY = bounds.noRect.top - bounds.zoneRect.top;
 
-  noState.currentX = Number.isFinite(left) ? left : clamp(fallbackX, 8, bounds.maxX);
-  noState.currentY = Number.isFinite(top) ? top : clamp(fallbackY, 8, bounds.maxY);
+  noState.currentX = Number.isFinite(left) ? left : clamp(fallbackX, NO_EDGE_BUFFER, bounds.maxX);
+  noState.currentY = Number.isFinite(top) ? top : clamp(fallbackY, NO_EDGE_BUFFER, bounds.maxY);
   noState.targetX = noState.currentX;
   noState.targetY = noState.currentY;
 }
@@ -78,14 +83,22 @@ function ensureNoMotionLoop() {
   noState.rafId = requestAnimationFrame(smoothNoMotion);
 }
 
+function stopNoMotionLoop() {
+  if (noState.rafId === null) return;
+  cancelAnimationFrame(noState.rafId);
+  noState.rafId = null;
+}
+
 function moveNoButtonRandomly() {
+  if (!noMovementEnabled) return;
   const bounds = getNoBounds();
-  const nextX = 8 + Math.random() * (bounds.maxX - 8);
-  const nextY = 8 + Math.random() * (bounds.maxY - 8);
+  const nextX = NO_EDGE_BUFFER + Math.random() * (bounds.maxX - NO_EDGE_BUFFER);
+  const nextY = NO_EDGE_BUFFER + Math.random() * (bounds.maxY - NO_EDGE_BUFFER);
   setNoTarget(nextX, nextY);
 }
 
 function pushNoButtonAway(pointerX, pointerY) {
+  if (!noMovementEnabled) return;
   const bounds = getNoBounds();
   const buttonX = noState.currentX ?? (bounds.noRect.left - bounds.zoneRect.left);
   const buttonY = noState.currentY ?? (bounds.noRect.top - bounds.zoneRect.top);
@@ -96,7 +109,7 @@ function pushNoButtonAway(pointerX, pointerY) {
   const dx = btnCenterX - pointerX;
   const dy = btnCenterY - pointerY;
   const distance = Math.hypot(dx, dy);
-  const triggerDistance = 190;
+  const triggerDistance = 130;
 
   if (distance > triggerDistance) return;
 
@@ -121,13 +134,33 @@ function resetRosesAnimation() {
 
 enterBtn.addEventListener("click", () => {
   showScreen(mainScreen);
-  seedNoState();
-  ensureNoMotionLoop();
-  moveNoButtonRandomly();
+  noMovementEnabled = false;
+  if (noMovementTimer !== null) {
+    clearTimeout(noMovementTimer);
+  }
+  stopNoMotionLoop();
+  noState.currentX = null;
+  noState.currentY = null;
+  noState.targetX = null;
+  noState.targetY = null;
+  noBtn.style.left = "";
+  noBtn.style.top = "";
+
+  noMovementTimer = setTimeout(() => {
+    noMovementEnabled = true;
+    seedNoState();
+    ensureNoMotionLoop();
+    noMovementTimer = null;
+  }, NO_ACTIVATION_DELAY_MS);
 });
 
 yesBtn.addEventListener("click", () => {
   showScreen(finalScreen);
+  stopNoMotionLoop();
+  if (noMovementTimer !== null) {
+    clearTimeout(noMovementTimer);
+    noMovementTimer = null;
+  }
   resetRosesAnimation();
 });
 
@@ -157,3 +190,4 @@ window.addEventListener("resize", () => {
   if (noState.currentX === null || noState.currentY === null) return;
   setNoTarget(noState.currentX, noState.currentY);
 });
+
